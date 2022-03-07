@@ -8,6 +8,9 @@ P(\theta)&\equiv \text{prior}\\
 P(X)&\equiv \text{normalization}
 \end{align}
 
+![formula](https://render.githubusercontent.com/render/math?math=e^{i \pi} = -1)
+
+
 The idea behind the Bayesian inference is that given the observed data X, we choose a prior distribution of the parameters $P(\theta)$, e.g. a uniform distribution or a normal distribution, and we find the parametesr $\theta$ which maximizes the posterior distribution $P(\theta|X)$. The mathematical expression is:
 $$argmax_\theta P(\theta|X)$$
 Since $P(X)$ is independent of $\theta$, the question is simplified to $$argmax_\theta P(X|\theta)\cdot P(\theta)$$
