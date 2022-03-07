@@ -36,7 +36,8 @@ height = around(np.random.normal(175,10,100),1)
 
 ## Get Prior $P(\theta)$
 
-We assume that our probailistic model (sampling distribution) follows a normal distribution. In this case, we have two parameters $\mu$ and $\sigma$, and we further assume that the two parameters follows a Guassian distribution with $\mu\sim N(175,10)$ and $\sigma \sim N(10,5)$. The two random variable are also independent. 
+We assume that our probailistic model (sampling distribution) follows a normal distribution. In this case, we have two parameters $\mu$ and $\sigma$, and we further assume that the two parameters follows a Guassian distribution with $\mu\sim N(175,10)$ and $\sigma \sim N(10,5)$. The two random variable are not necessarily independent, and the joint pdf of the two random variables is given by 
+$$f_{\textbf{X}}(\textbf{x})=\frac{1}{\sqrt{(2\pi)^k|\Sigma|}}\text{exp}\left(-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)\right).$$ 
 
 
 ```python
@@ -46,8 +47,8 @@ sigma_hat = np.linspace(10-5,10+5,11)
 
 
 ```python
-prior_mu = stats.norm.pdf(mu_hat,175,10)
-prior_sigma = stats.norm.pdf(sigma_hat,10,5)
+cov = array([[100,0],[0,25]])
+mu_arr = array([175,10])
 ```
 
 
@@ -57,7 +58,8 @@ theta_arr = array([[mu,sig] for mu in mu_hat for sig in sigma_hat])
 
 
 ```python
-prior = array([p_mu * p_sig for p_mu in prior_mu for p_sig in prior_sigma])
+#prior = array([p_mu * p_sig for p_mu in prior_mu for p_sig in prior_sigma])
+prior = stats.multivariate_normal.pdf(theta_arr,mean = mu_arr,cov = cov)
 ```
 
 
@@ -82,7 +84,8 @@ title('Prior distribution')
 ## Get likelihood
 
 The pdf of multi-variate normal distribution is given by 
-$$f_{\textbf{X}}(\textbf{x})=\frac{1}{\sqrt{(2\pi)^k|\Sigma|}}\text{exp}\left(-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)\right).$$ Here, we assume that each height samples is drawn independently.
+$$f_{\textbf{X}}(\textbf{x})=\frac{1}{\sqrt{(2\pi)^k|\Sigma|}}\text{exp}\left(-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)\right).$$ Here, we assume that each height samples is drawn independently. Then the total probability is given by 
+$$P(X|\theta)=\prod_i P(x_i|\theta)$$
 
 
 ```python
@@ -97,7 +100,7 @@ plot(likelihood)
 
 
 
-    [<matplotlib.lines.Line2D at 0x7f12c0287940>]
+    [<matplotlib.lines.Line2D at 0x7f510df2eaf0>]
 
 
 
@@ -151,7 +154,7 @@ ax[2].plot(posterior)
 
 
 
-    [<matplotlib.lines.Line2D at 0x7f12c01d2d60>]
+    [<matplotlib.lines.Line2D at 0x7f510de79dc0>]
 
 
 
